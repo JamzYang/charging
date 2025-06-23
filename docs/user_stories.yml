@@ -1,0 +1,271 @@
+user_stories:
+  预约阶段: # Booking Stage
+    - user_story_id: US1
+      title: Browse Charging Stations on Map
+      as_a:  user
+      i_want_to: browse available charging stations on a map
+      so_that: I can find a station near my current location or destination # Meets user role's goal: find convenient charging
+      acceptance_criteria:
+        - "Verify that the app displays a map showing charging stations."
+        - "Verify that station locations are accurately represented on the map."
+        - "Verify that user can zoom and pan the map."
+
+    - user_story_id: US2
+      title: Filter Charging Stations
+      as_a:  user
+      i_want_to: filter charging stations based on criteria like charging speed, connector type, and price
+      so_that: I can quickly find stations that meet my specific needs # Meets user role's goal: efficient charging (find suitable stations)
+      acceptance_criteria:
+        - "Verify that filters are available for charging speed (e.g., fast, standard)."
+        - "Verify that filters are available for connector type (e.g., GB/T, Tesla)."
+        - "Verify that filters are available for price or pricing model."
+        - "Verify that filtering stations updates the map display accordingly."
+
+    - user_story_id: US3
+      title: View Charging Station Details
+      as_a:  user
+      i_want_to: view detailed information about a charging station, including available chargers, real-time status, pricing, and location
+      so_that: I can make an informed decision about choosing a station # Meets user role's goal: convenient and efficient charging (informed decision)
+      acceptance_criteria:
+        - "Verify that station details include address and location information."
+        - "Verify that station details include a list of chargers at the station."
+        - "Verify that charger details show real-time status (available, occupied, out of service)."
+        - "Verify that station details show pricing information."
+
+    - user_story_id: US4
+      title: Select and Reserve a Charger
+      as_a:  user
+      i_want_to: select a specific charger at a station and reserve it for a period of time
+      so_that: I can ensure a charging spot is available when I arrive and avoid waiting # Meets user role's goal: convenient charging (guaranteed spot)
+      acceptance_criteria:
+        - "Verify that user can select a connector from the station details."
+        - "Verify that user can choose a reservation duration (if applicable)."
+        - "Verify that the system confirms the reservation with booking details."
+
+    - user_story_id: US5
+      title: Handle Booking Failures - Station Unavailable
+      as_a:  user
+      i_want_to: be informed if a selected charging station or charger is unavailable and booking is prevented
+      so_that: the system follows booking rules and I don't waste time trying to book unavailable resources # Meets overall solution's rules: booking rules (charger availability)
+      acceptance_criteria:
+        - "Verify that the system prevents booking if the selected connector is occupied."
+        - "Verify that the system prevents booking if the selected connector is out of service."
+        - "Verify that the system displays a clear message indicating unavailability and reason."
+
+    - user_story_id: US6
+      title: Handle Booking Failures - No EV Vehicle on Account
+      as_a:  user
+      i_want_to: be informed if I cannot book a charger because I have not registered an EV vehicle under my account
+      so_that: the system follows booking rules and ensures charging is associated with a vehicle # Meets overall solution's rules: booking rules (account with EV)
+      acceptance_criteria:
+        - "Verify that the system prevents booking if no EV is registered under the user account."
+        - "Verify that the system displays a clear message prompting the user to add a vehicle."
+
+    - user_story_id: US7
+      title: Handle Booking Failures - Unpaid Orders
+      as_a:  user
+      i_want_to: be prevented from making new reservations if I have unpaid charging orders and be prompted to pay
+      so_that: the system follows booking rules and maintains payment integrity # Meets overall solution's rules: booking rules (payment status)
+      acceptance_criteria:
+        - "Verify that the system prevents booking if the user has unpaid orders."
+        - "Verify that the system displays a clear message prompting the user to pay outstanding balance."
+        - "Verify that the message includes a link to pay unpaid orders."
+
+    - user_story_id: US8
+      title: Handle Booking Failures - Monthly Booking Limit Reached
+      as_a:  user
+      i_want_to: be informed if I cannot make further reservations this month because I have reached my monthly booking limit
+      so_that: the system follows booking rules and manages resource allocation # Meets overall solution's rules: booking rules (booking limits)
+      acceptance_criteria:
+        - "Verify that the system prevents booking if the user has reached the monthly booking limit."
+        - "Verify that the system displays a clear message indicating booking limit reached."
+        - "Verify that the message suggests contacting customer service."
+
+    - user_story_id: US9
+      title: Successful Booking Confirmation
+      as_a:  user
+      i_want_to: receive a clear confirmation message when my booking is successful
+      so_that: I can proceed to the station knowing my charging spot is secured # Enables user journey's next step: going to station
+      acceptance_criteria:
+        - "Verify that a confirmation message is displayed upon successful booking."
+        - "Verify that the confirmation message includes booking details (station, connector, time)."
+        - "Verify that booking details are also saved in user's booking history."
+
+  进入场站充电准备阶段: # Station Entry/Charging Prep Stage
+    - user_story_id: US10
+      title: "Lock Down Ground Lock via App"
+      as_a:  user
+      i_want_to: Lock Down the Ground Lock using the app when I arrive at a reserved Station
+      so_that: I can Enter Parking Spot and access the Connector # Enables user journey's next step: plugging in connector
+      acceptance_criteria:
+        - "Verify that the app provides a button or interface to Lock Down the Ground Lock for booked connectors with locks."
+        - "Verify that clicking the button sends a command to Lock Down the Ground Lock."
+        - "Verify that the app provides feedback indicating Lock Down status."
+
+    - user_story_id: US11
+      title: Handle Parking Lock Timeout
+      as_a:  user
+      i_want_to: have the parking lock automatically raise if I fail to enter the parking space within 5 minutes after lowering the lock
+      so_that: the system follows process flow and the parking space is not blocked unnecessarily # Meets overall solution's process: parking lock timeout process
+      acceptance_criteria:
+        - "Verify that the parking lock automatically raises after 5 minutes if the parking space is not occupied."
+        - "Verify that the system provides a visual or audible indication of the lock raising (if feasible)."
+
+  充电阶段: # Charging Stage
+    - user_story_id: US12
+      title: "Start Charging Session by Scan QR Code"
+      as_a:  user
+      i_want_to: start the Charging Session by Scan QR Code on the Connector
+      so_that: the system can Start Charging Command # Meets overall solution's process: scanning QR code to start charging
+      acceptance_criteria:
+        - "Verify that the app provides a QR code scanner to initiate charging."
+        - "Verify that scanning the QR code on the charger initiates the charging process."
+        - "Verify that the app provides feedback confirming charging initiation."
+
+    - user_story_id: US13
+      title: "Set Target SOC"
+      as_a:  user
+      i_want_to: Set Target SOC before Start Charging
+      so_that: I can control the Charging Amount # Meets user role's goal: efficient charging (control charge amount)
+      acceptance_criteria:
+        - "Verify that the app allows user to set a target SOC."
+        - "Verify that target SOC can be set as percentage or kWh."
+        - "Verify that the system saves the target SOC setting for the charging session."
+
+    - user_story_id: US14
+      title: "Start Charging Process"
+      as_a: user
+      i_want_to: start the actual charging process after plugging in the connector and setting my preferences
+      so_that: my vehicle begins charging and I can monitor the progress # Meets user role's goal: efficient charging (initiate and monitor)
+      acceptance_criteria:
+        - "Verify that the system initiates charging after user confirmation."
+        - "Verify that the app displays a clear indication that charging has started."
+        - "Verify that the app shows real-time charging status including power rate."
+        - "Verify that the app shows the amount of energy (kWh) delivered to the vehicle in real-time."
+        - "Verify that the app displays the current charging cost accumulating in real-time."
+
+    - user_story_id: US15
+      title: Automatic Charging Stop - Target Reached
+      as_a:  user
+      i_want_to: have the charging process automatically stop when my vehicle reaches the set target charge level
+      so_that: the system follows charging process rules and prevents overcharging # Meets overall solution's rules: charging process rules (auto stop)
+      acceptance_criteria:
+        - "Verify that charging automatically stops when the target SOC is reached."
+        - "Verify that the app notifies the user when charging stops automatically."
+
+    - user_story_id: US16
+      title: Automatic Charging Stop - Battery Full
+      as_a:  user
+      i_want_to: have the charging process automatically stop when my vehicle's battery is fully charged, even if the target level is not reached
+      so_that: the system follows charging process rules and protects the battery from overcharging # Meets overall solution's rules: charging process rules (auto stop - full battery)
+      acceptance_criteria:
+        - "Verify that charging automatically stops when the vehicle battery is full."
+        - "Verify that the app notifies the user when charging stops automatically due to full battery."
+
+    - user_story_id: US17
+      title: Manual Charging Stop
+      as_a:  user
+      i_want_to: manually stop the charging process at any time via the app or charger interface
+      so_that: I have full control over the charging session # Meets user role's goal: convenient charging (user control)
+      acceptance_criteria:
+        - "Verify that the app provides a button or interface to manually stop charging."
+        - "Verify that pressing the button stops the charging process."
+        - "Verify that the connector interface (if available) also provides a manual stop option."
+
+  支付阶段: # Payment Stage
+    - user_story_id: US18
+      title: Choose Payment Method
+      as_a:  user
+      i_want_to: choose from available payment methods, such as wallet balance or Alipay, after charging is complete
+      so_that: the system follows payment process flow and I can pay using my preferred method # Meets overall solution's process: payment process flow (choose method)
+      acceptance_criteria:
+        - "Verify that the app presents available payment methods after charging completion."
+        - "Verify that available methods include wallet balance and Alipay (and others if applicable)."
+        - "Verify that user can select a payment method."
+
+    - user_story_id: US19
+      title: Use Wallet Balance for Payment
+      as_a:  user
+      i_want_to: use my in-app wallet balance to pay for charging if I have sufficient balance
+      so_that: the system follows payment process flow and I can utilize pre-loaded funds # Meets overall solution's process: payment process flow (wallet payment)
+      acceptance_criteria:
+        - "Verify that the app allows payment via wallet balance if sufficient funds are available."
+        - "Verify that wallet balance is deducted upon successful payment."
+        - "Verify that the app displays a message if wallet balance is insufficient."
+
+    - user_story_id: US20
+      title: Alipay Payment - Authorized 免密支付 (Password-free Payment)
+      as_a:  user
+      i_want_to: have the payment processed automatically and seamlessly if I have authorized 免密支付 (password-free payment) with Alipay
+      so_that: the system follows payment process flow and payment is quick and hassle-free # Meets overall solution's process: payment process flow (免密支付)
+      acceptance_criteria:
+        - "Verify that payment is processed automatically via Alipay 免密支付 if authorized."
+        - "Verify that the app provides confirmation of successful 免密支付."
+
+    - user_story_id: US21
+      title: Alipay Payment - Request Authorization for 免密支付
+      as_a:  user
+      i_want_to: be prompted to authorize 免密支付 (password-free payment) with Alipay if I haven't authorized it
+      so_that: the system enhances user experience for future payments and encourages streamlined payment # Meets user role's goal: convenient payment (future simplification)
+      acceptance_criteria:
+        - "Verify that the app prompts for Alipay 免密支付 authorization if not already authorized."
+        - "Verify that the prompt clearly explains the benefits of 免密支付."
+        - "Verify that the user can choose to authorize or decline 免密支付."
+
+    - user_story_id: US22
+      title: Alipay Payment - Manual Payment via 收银台 (Cashier)
+      as_a:  user
+      i_want_to: be able to pay manually via Alipay's 收银台 (cashier interface) if I decline 免密支付 or encounter issues with automatic payment
+      so_that: the system ensures payment completion even without 免密支付 # Meets overall solution's process: payment process flow (manual Alipay)
+      acceptance_criteria:
+        - "Verify that the app redirects to Alipay's 收银台 for manual payment if 免密支付 is declined or fails."
+        - "Verify that the payment can be completed successfully via Alipay's 收银台."
+
+    - user_story_id: US23
+      title: Handle Payment Failure and Retry
+      as_a:  user
+      i_want_to: be notified if the payment fails and be given the option to retry payment
+      so_that: the system follows payment process flow and allows for transaction resolution # Meets overall solution's process: payment process flow (failure handling)
+      acceptance_criteria:
+        - "Verify that the app displays a notification if payment fails."
+        - "Verify that the app provides a 'retry payment' option."
+        - "Verify that retrying payment attempts to re-process the payment."
+
+    - user_story_id: US24
+      title: View Order Details and History
+      as_a:  user
+      i_want_to: view the details of my current and past charging orders, including charging duration, energy consumption, cost, and payment status
+      so_that: I can track my charging expenses and history # Meets user role's goal: convenient charging (tracking history)
+      acceptance_criteria:
+        - "Verify that the app provides access to order details and history."
+        - "Verify that order details include charging duration, energy consumption, cost, and payment status."
+        - "Verify that order history shows a list of past charging orders."
+
+    - user_story_id: US25
+      title: Handle Payment Timeout and Consequences
+      as_a: system administrator # Technically system perspective, but impacts user
+      i_want_to: automatically close the order, restrict the user's booking permissions, and send reminders via App push and SMS if a user fails to pay for a charging session within a timeout period
+      so_that: the system follows payment rules and manages unpaid orders efficiently # Meets overall solution's rules: payment rules (timeout consequences)
+      acceptance_criteria:
+        - "Verify that the system automatically closes unpaid orders after a defined timeout period."
+        - "Verify that the system restricts booking permissions for users with timed-out unpaid orders."
+        - "Verify that the system sends App push and SMS reminders to users with timed-out unpaid orders."
+
+    - user_story_id: US26
+      title: Order Completion Confirmation
+      as_a:  user
+      i_want_to: receive confirmation that my charging order is completed after successful payment
+      so_that: I know the entire charging process is finished and recorded # Enables user journey's next step: ending the interaction
+      acceptance_criteria:
+        - "Verify that the app displays a clear 'Order Completed' message after successful payment."
+        - "Verify that the completed order is reflected in the user's order history."
+
+  订单完成阶段: # Order Completion Stage (Implicit - covered by Payment Stage US)
+    - user_story_id: US27
+      title: Order Completion Confirmation
+      as_a:  user
+      i_want_to: receive confirmation that my charging order is completed after successful payment
+      so_that: I know the entire charging process is finished and recorded # Enables user journey's next step: ending the interaction
+      acceptance_criteria:
+        - "Verify that the app displays a clear 'Order Completed' message after successful payment."
+        - "Verify that the completed order is reflected in the user's order history."

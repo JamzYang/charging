@@ -1,0 +1,161 @@
+---
+id: 97adbaeb-cca6-448e-ad10-f3396da4f9a8
+---
+classDiagram
+
+%% 充电会话聚合
+class ChargeSession {
+    <<Aggregate>>
+    +sessionId
+    +userId
+    +stationId
+    +connectorId
+    +parkingSpotId
+    +reservationId?
+    +lockId?
+    +status ChargeSessionStatus
+    +startTime
+    +endTime
+}
+
+
+%% 充电订单实体
+class ChargingOrder {
+    <<Entity>>
+    +orderId
+    +sessionId
+    +state OrderStatus
+    +amount Money
+    +chargingAmount Money
+    +serviceAmount Money
+}
+
+class ChargingRecord {
+    <<Entity>>
+    +recordId
+    +orderId
+    +startTime
+    +endTime
+    +startSoc
+    +endSoc
+    +power
+    +energy
+    +duration
+    +fee Money
+}
+
+%% 场站聚合
+class Station {
+    <<Aggregate>>
+    +stationId
+    +name
+    +operator
+    +address
+    +location Location
+    +status StationStatus
+    +businessHours TimeRange
+}
+
+class Connector {
+    <<Entity>>
+    +connectorId
+    +stationId %% 明确属于哪个Station
+    +parkingSpotId %% 关联到对应的ParkingSpot
+    +type ConnectorType
+    +status ConnectorStatus
+    +power Power
+}
+
+%% 车位聚合
+class ParkingSpot {
+    <<Aggregate>>
+    +spotId
+    +stationId %% 关联到所属Station
+    +connectorId %% 关联到配对的Connector (Nullable if not always paired)
+    +status SpotStatus
+    +lockId %% 关联到地锁
+}
+
+class GroundLock {
+    <<Entity>>
+    +lockId
+    +spotId %% 明确属于哪个ParkingSpot
+    +status LockStatus
+}
+
+%% 用户聚合
+class User {
+    <<Aggregate>>
+    +userId
+    +account Account
+    +wallet Wallet
+    +defaultCount int
+    +reservationPermission boolean
+}
+
+%% 预约聚合
+class Reservation {
+    <<Aggregate>>
+    +reservationId
+    +userId
+    +stationId
+    +connectorId
+    +parkingSpotId %% Renamed from parkingSpaceId
+    +lockId %% 可选, 如果预约时需要操作地锁
+    +status ReservationStatus
+    +startTime
+    +endTime
+}
+
+%% 值对象
+class Money {<<Value Object>>}
+class Location {<<Value Object>>}
+class TimeRange {<<Value Object>>}
+class Power {<<Value Object>>}
+class SessionState {<<Value Object>>}
+class OrderState {<<Value Object>>}
+class StationStatus {<<Value Object>>}
+class ConnectorStatus {<<Value Object>>}
+class SpotStatus {<<Value Object>>}
+class LockStatus {<<Value Object>>}
+class ConnectorType {<<Value Object>>}
+class ReservationStatus {<<Value Object>>}
+%% 领域服务
+class ReservationService {<<Service>>}
+class ChargingService {<<Service>>}
+class PaymentService {<<Service>>}
+%% 关系
+%% Station聚合内部关系
+Station "1" -- "*" Connector : contains
+
+%% ParkingSpot聚合内部关系 (假设GroundLock属于ParkingSpot聚合)
+ParkingSpot "1" -- "0..1" GroundLock : contains
+
+%% ChargeSession聚合相关关系 (假设Order/Record是Session的一部分或紧密关联)
+ChargeSession "1" -- "0..1" ChargingOrder : relates to
+ChargeSession "1" -- "1..n" ChargingRecord : relates to
+
+%% 跨聚合关联 (虚线表示)
+Station "1" .. "*" ParkingSpot : associated with (via stationId)
+ParkingSpot "1" .. "0..1" Connector : paired with (via connectorId/parkingSpotId)
+ChargeSession ..> User : initiated by
+ChargeSession ..> Station : occurs at
+ChargeSession ..> Connector : uses
+ChargeSession ..> ParkingSpot : occupies
+ChargeSession ..> Reservation : fulfills (optional)
+Reservation ..> User : made by
+Reservation ..> Station : for station
+Reservation ..> Connector : reserves connector
+Reservation ..> ParkingSpot : reserves spot
+Reservation ..> GroundLock : reserves lock (indirectly via ParkingSpot)
+
+%% 服务依赖 (可以省略或单独表示)
+%% ReservationService ..> Station
+%% ReservationService ..> ParkingSpot
+%% ReservationService ..> User
+%% ChargingService ..> ChargeSession
+%% ChargingService ..> Connector
+%% ChargingService ..> ParkingSpot
+%% ChargingService ..> Station
+%% PaymentService ..> ChargingOrder
+%% PaymentService ..> User
