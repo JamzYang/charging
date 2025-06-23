@@ -44,6 +44,22 @@
 
 ## 文档
 
+### 📋 项目规划文档
+- [开发计划](./docs/development-plan.md) - 详细的开发计划和时间安排
+- [任务跟踪](./docs/task-tracking.md) - 开发进度跟踪表
+- [技术架构](./docs/technical-architecture.md) - 技术选型和架构设计
+
+### 📖 业务文档
+- [用户故事](./docs/user_stories.yml) - 完整的用户需求和验收标准
+- [业务流程](./docs/flowchart.md) - 充电业务流程图
+- [统一语言](./docs/ubiquitous_language.md) - 领域统一语言定义
+- [充电会话状态机](./docs/充电会话状态机详细设计.md) - 状态机详细设计
+
+### 🛠 开发规范
+- [项目结构规范](./docs/ai-code-rules/ai-project.md) - DDD 分层架构规范
+- [领域驱动设计](./docs/ai-code-rules/ai-ddd.md) - DDD 实践指南
+- [测试规范](./docs/ai-code-rules/ai-testing.md) - 测试策略和规范
+
 更多详细信息，请参阅 [docs](./docs) 目录下的文档。
 
 ## 许可证
