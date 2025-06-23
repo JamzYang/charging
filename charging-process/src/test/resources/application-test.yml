@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: charging-process-test
+  
+  # Test Database Configuration
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  # JPA Test Configuration
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  # H2 Console disabled in tests
+  h2:
+    console:
+      enabled: false
+
+# Server Configuration for tests
+server:
+  port: 0  # Random port for tests
+
+# Logging Configuration for tests
+logging:
+  level:
+    com.ys.charging.process: INFO
+    org.springframework.data: WARN
+    org.hibernate.SQL: WARN
+    org.springframework.test: INFO
