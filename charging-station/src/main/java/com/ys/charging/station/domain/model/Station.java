@@ -394,7 +394,7 @@ public class Station extends AbstractAggregateRoot<Station> {
     public Set<Connector> getConnectors() { return Collections.unmodifiableSet(connectors); }
     public Set<ParkingSpot> getParkingSpots() { return Collections.unmodifiableSet(parkingSpots); }
     public Integer getTotalConnectors() { return totalConnectors; }
-    public Integer getAvailableConnectors() { return availableConnectors; }
+    public Integer getAvailableConnectorCount() { return availableConnectors; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getUpdatedAt() { return updatedAt; }
     public Long getVersion() { return version; }

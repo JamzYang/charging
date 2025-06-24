@@ -1,0 +1,77 @@
+# 测试环境配置
+spring:
+  profiles:
+    active: test
+  
+  # 数据源配置 - 使用 H2 内存数据库
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+    
+  # JPA 配置
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+        
+  # H2 控制台配置（测试时可用）
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      
+  # Redis 配置 - 使用嵌入式 Redis
+  data:
+    redis:
+      host: localhost
+      port: 6370  # 使用不同端口避免冲突
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          
+  # 缓存配置
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=30m
+      
+# 日志配置
+logging:
+  level:
+    com.ys.charging.station: DEBUG
+    org.springframework.data.jpa: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    
+# 测试专用配置
+test:
+  # 数据库初始化
+  database:
+    init-mode: always
+    
+  # Redis 测试配置
+  redis:
+    embedded: true
+    
+  # 异步配置
+  async:
+    enabled: false  # 测试时禁用异步，便于验证
+    
+# 管理端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
