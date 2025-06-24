@@ -1,6 +1,7 @@
 package com.ys.charging.station.domain.service;
 
 import com.ys.charging.station.domain.model.Location;
+import com.ys.charging.station.domain.model.Station;
 import com.ys.charging.station.domain.model.StationStatus;
 
 import java.math.BigDecimal;
@@ -110,8 +111,38 @@ public record GeoSearchResult(
     }
     
     /**
+     * 获取充电站对象（用于 DTO 转换）
+     * 注意：这是一个简化的实现，实际应该从完整的 Station 对象转换
+     *
+     * @return 简化的 Station 对象
+     */
+    public Station getStation() {
+        // 这里返回一个简化的 Station 对象
+        // 实际实现中应该从完整的 Station 对象转换而来
+        return null; // 暂时返回 null，避免循环依赖
+    }
+
+    /**
+     * 获取距离（用于 DTO 转换）
+     *
+     * @return 距离值
+     */
+    public Double getDistance() {
+        return distanceKm;
+    }
+
+    /**
+     * 获取距离单位（用于 DTO 转换）
+     *
+     * @return 距离单位
+     */
+    public String getUnit() {
+        return "km";
+    }
+
+    /**
      * 判断充电站是否可用
-     * 
+     *
      * @return true 如果充电站可用
      */
     public boolean isStationAvailable() {

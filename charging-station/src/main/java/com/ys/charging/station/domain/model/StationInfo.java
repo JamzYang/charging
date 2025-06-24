@@ -111,8 +111,17 @@ public record StationInfo(
     }
     
     /**
+     * 获取联系电话（别名方法，用于 DTO 转换）
+     *
+     * @return 联系电话
+     */
+    public String phone() {
+        return contactPhone;
+    }
+
+    /**
      * 判断是否有联系电话
-     * 
+     *
      * @return true 如果有联系电话
      */
     public boolean hasContactPhone() {
